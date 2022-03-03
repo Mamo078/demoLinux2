@@ -1,0 +1,53 @@
+import numpy as np
+from numpy.linalg import inv
+import matplotlib.pyplot as plt
+
+# Values being stored in current and voltage vector ( column vectors )
+
+V = np.array([[1.23 , 1.38 , 2.06 , 2.47 , 3.17 ]]).T
+I = np.array([[0.2 , 0.3 , 0.4 , 0.5 , 0.6 ]]).T
+
+# plotting the measurements
+
+plt.scatter(I,V)
+plt.xlabel('Current ( ampere ) ')
+plt.ylabel('Voltage ( volts ) ')
+plt.grid(True) # logical value can be put here
+plt.show()
+
+# Now estimating the value of resistance ( slope parameter )
+# Squared error criterian and method of least squares
+
+H = I
+y = V
+
+# making use of expression
+
+A = np.dot(H.T , H)
+B = np.dot(H.T , y)
+
+A_inv = inv(A)
+
+R_hat = np.dot((A_inv) , B )  #don't use * operation here ( in python make use of function )
+
+print('The value of parameter for best-fit line is : '
+)
+print(R_hat)
+
+# Plotting the results that we got
+
+I_plot = np.arange(0 , 0.8 , 0.1).reshape(8,1)  # attribute is arange not 'arrange' ( single r only )
+V_plot = np.dot(I_plot , R_hat )
+
+plt.scatter(I,V)
+plt.plot(I_plot , V_plot , color="red")
+plt.xlabel('Current(ampere)')
+plt.ylabel('Voltage(volts)')
+plt.grid(True)
+plt.show()
+
+
+# if the steps are implemented correctly , the estimate of resistance (R_hat) should be very close to the actual resistance
+# though it will not the actual value of resistance as we had very limited number of noisy measurements
+
+
